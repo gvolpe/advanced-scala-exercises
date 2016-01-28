@@ -1,15 +1,24 @@
 package com.gvolpe.advanced.typeclasses
 
 import PrintDefaults._
+import CatDefaults._
+import PrintSyntax._
 
 object Anatomy extends App {
 
   val name = "Gabi"
   val age = 28
 
-  Print.accepts(name)
-  Print.accepts(age)
+  Print.print(name)
+  Print.print(age)
 
+  case class Cat(name: String, age: Int, color: String)
+
+  val cat = Cat("Felix", 7, "Grey")
+
+//  Print.print(cat)
+
+  cat.print
 }
 
 trait Printable[A] {
@@ -20,7 +29,7 @@ object Print {
   def format[A](a: A)(implicit printable: Printable[A]): String = {
     printable.format(a)
   }
-  def accepts[A](a: A)(implicit printable: Printable[A]): Unit = {
-    println(printable.format(a))
+  def print[A](a: A)(implicit printable: Printable[A]): Unit = {
+    println(format(a))
   }
 }
