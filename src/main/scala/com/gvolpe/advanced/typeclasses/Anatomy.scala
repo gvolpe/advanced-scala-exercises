@@ -12,14 +12,13 @@ object Anatomy extends App {
   Print.print(name)
   Print.print(age)
 
-  case class Cat(name: String, age: Int, color: String)
-
   val cat = Cat("Felix", 7, "Grey")
 
-//  Print.print(cat)
+  //  Print.print(cat)
 
   cat.print
 }
+
 
 trait Printable[A] {
   def format(a: A): String

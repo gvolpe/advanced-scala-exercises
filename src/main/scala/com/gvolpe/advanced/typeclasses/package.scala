@@ -1,8 +1,8 @@
 package com.gvolpe.advanced
 
-import com.gvolpe.advanced.typeclasses.Anatomy.Cat
-
 package object typeclasses {
+
+  case class Cat(name: String, age: Int, color: String)
 
   object PrintDefaults {
     implicit val stringPrintable = new Printable[String] {
