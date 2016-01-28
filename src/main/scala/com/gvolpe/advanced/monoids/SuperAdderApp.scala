@@ -3,7 +3,9 @@ package com.gvolpe.advanced.monoids
 import scalaz.Monoid
 import scalaz.std.anyVal._
 import scalaz.std.option._
+import scalaz.std.string._
 import scalaz.syntax.monoid._
+import ListMonoid._
 import OrderOps._
 
 object SuperAdderApp extends App {
@@ -13,12 +15,17 @@ object SuperAdderApp extends App {
 //  println(SuperAdderSyntax.add(items))
 
   val optItems = List(Some(2), None, Some(5))
-  println(SuperAdderSyntax.add(optItems))
+  //println(SuperAdderSyntax.add(optItems))
 
   case class Order(totalCost: Double, quantity: Int)
 
   val order = List(Order(248.0, 5), Order(1000.0, 12))
-  println(SuperAdderSyntax.add(order))
+  //println(SuperAdderSyntax.add(order))
+
+  println(optItems.foldMap())
+  println(order.foldMap())
+
+  val stringItems: String = items.foldMap(_.toString)
 
 }
 
