@@ -1,3 +1,4 @@
+import scalaz.Functor
 import scalaz.std.function._
 import scalaz.syntax.functor._
 
@@ -13,3 +14,12 @@ func3(1)
     def map[A, B](fa: F[A])(f: A => B): F[B]
   }
 */
+
+val optionFunctor = new Functor[Option] {
+  def map[A, B](value: Option[A])(func: A => B): Option[B] =
+    value map func
+}
+
+optionFunctor.map(Some(123))((a: Int) => a * 2)
+
+//Some(123) map (_ * 2)
