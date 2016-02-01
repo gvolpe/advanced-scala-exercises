@@ -18,10 +18,23 @@ bar(List(1,2,3), List(2))
 bar(Some(1), Some(2))
 
 // Trying out our implementation
-val functor = implicitly[Functor[List]]
-functor.map(List(1,2,3))(_ * 3)
+val listFunctor = implicitly[Functor[List]]
+listFunctor.map(List(1,2,3))(_ * 3)
 
 implicitly[Functor[Option]].map(Some(1))(_ + 1)
 
 val genFunctor = implicitly[Functor[Int => ?]]
 val func = genFunctor.map(_ + 1)(_ + 2)
+func(5)
+
+// Functors Composition
+
+val optionFunctor = implicitly[Functor[Option]]
+val composedFunctor = listFunctor compose optionFunctor
+
+val xs: List[Option[Int]] = List(Some(1), None, Some(4))
+
+// This doesn't work but it works with the powerful functor
+// xs.map(_ + 1)
+
+composedFunctor.map(xs)(_ + 1)
