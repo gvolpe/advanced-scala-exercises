@@ -9,6 +9,8 @@ package object monads {
   final case class Warning[A](value: A, message: String) extends Result[A]
   final case class Failure(message: String) extends Result[Nothing]
 
+  // flatMap and point exercise
+
   implicit val resultMonad = new Monad[Result] {
     def point[A](a: => A): Result[A] = Success(a)
     def bind[A, B](fa: Result[A])(f: (A) => Result[B]): Result[B] = fa match {
@@ -30,4 +32,5 @@ package object monads {
   def success[A](value: A): Result[A] = Success(value)
   def warning[A](value: A, message: String): Result[A] = Warning(value, message)
   def failure[A](message: String): Result[A] = Failure(message)
+
 }
