@@ -1,6 +1,7 @@
 package com.gvolpe.advanced
 
 import scala.language.higherKinds
+import scalaz.Id._
 import scalaz.{Monad, Functor, Monoid}
 import scalaz.syntax.monoid._
 import scalaz.syntax.monad._
@@ -19,7 +20,10 @@ package object functors {
       def foldMap[A, B: Monoid](fa: List[A])(f: (A) => B): B = {
         fa.foldLeft(mzero[B])(_ |+| f(_))
       }
-      def foldMapM[A, M[_] : Monad, B: Monoid](seq: List[A])(f: A => M[B]): M[B] =
+      def foldMapAsMonad[A, B: Monoid](fa: List[A])(f: (A) => B): B = {
+        foldMapM[A, Id, B](fa)(f(_).point[Id])
+      }
+      def foldMapM[A, M[_] : Monad, B: Monoid](seq: List[A])(f: A => M[B] = (a: A) => a.point[Id]): M[B] =
         seq.foldLeft(mzero[B].point[M]){ (acc, item) =>
           for {
             a <- acc
@@ -34,7 +38,7 @@ package object functors {
       def foldMap[B: Monoid](f: (A) => B): B = {
         FoldMappable[F].foldMap(fa)(f)
       }
-      def foldMapM[M[_] : Monad, B: Monoid](f: A => M[B]): M[B] = {
+      def foldMapM[M[_] : Monad, B: Monoid](f: A => M[B] = (a: A) => a.point[Id]): M[B] = {
         FoldMappable[F].foldMapM(fa)(f)
       }
     }
