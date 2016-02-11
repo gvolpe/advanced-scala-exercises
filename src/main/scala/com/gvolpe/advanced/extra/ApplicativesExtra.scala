@@ -8,7 +8,7 @@ import scala.language.higherKinds
   * FSiS Part 2 - Applicative type class
   * https://www.youtube.com/watch?v=tD_EyIKqqCk
   **/
-trait Applicative[F[_]] {
+trait Applicative[F[_]] extends Functor[F] {
   self =>
 
   def pure[A](a: A): F[A]
@@ -20,7 +20,7 @@ trait Applicative[F[_]] {
   def apply2[A, B, Z](fa: F[A], fb: F[B])(ff: F[(A, B) => Z]): F[Z] =
     apply(fa)(apply(fb)(map(ff)(f => b => a => f(a, b))))
 
-  def map[A, B](fa: F[A])(f: A => B): F[B] = apply(fa)(pure(f))
+  override def map[A, B](fa: F[A])(f: A => B): F[B] = apply(fa)(pure(f))
 
   def map2[A, B, Z](fa: F[A], fb: F[B])(f: (A, B) => Z): F[Z] =
     apply(fa)(map(fb)(b => f(_, b)))
